@@ -24,10 +24,19 @@ end
 load(sprintf('selected_rois.mat'));
 
 
+%load data (big data, can't host over the gitbuh repository, need to download first)
+if(exist('./data/selected_hcp_rois_fpcaresults.mat','file')==2)
+    %do nothing
+else
+    %download the data
+    outfilename = websave('./data/selected_hcp_rois_fpcaresults.mat','https://www.dropbox.com/s/qdc4qv21tv9oboj/selected_hcp_rois_fpcaresults.mat?dl=1');
+end
+
+
 
 %%%%%%%%%%%%%%%%%%%%%% set parameters %%%%%%%%%%%%%%%
 ith_run = 1; % index of the run (for saving the final results)
-idx_roi = 45; % index of pair of regions (values range from 1 to 45)
+idx_roi = 45; % index of pair of regions (ranging from 1 to 45)
 roia = array_a(idx_roi);
 roib = array_b(idx_roi);
 display(sprintf('running the posterior sample for roia_%d roib_%d',roia,roib));
@@ -43,8 +52,10 @@ COMP1 = 'fpca'; %  'fpca', choose function pca coefficents (the shape component)
                 % 'trans', choose the translation component as the first component                
 Indicator_ALPHA_BETA_PRIOR = 1; % set priors for parameters alpha and beta in NDP;
 
+% seed for reproducibility
+% load('random_seed.mat');
+% rng(d);
 [zeta, lP_record, xi, saveid] = mcmcNDP_rois_hcp(ith_run,idx_roi,0,COMP1,Indicator_ALPHA_BETA_PRIOR); 
-
 
 %%%%%%%%%%%%%%%%%%%%%% process and analysis the final result %%%%%%%%%%%%%%%%%%%%%
 Nsample = size(zeta,1);

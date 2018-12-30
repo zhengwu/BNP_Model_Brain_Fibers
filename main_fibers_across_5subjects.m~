@@ -35,13 +35,12 @@ idx_roi = 2; % index of pair of regions (1-45)
 roia = array_a(idx_roi);
 roib = array_b(idx_roi);
 
-%load data (big data, can't host over the gitbuh repository, need to download first)
+%load data (big data, can't host over the gitbu need to download first)
 if(exist('./data/selected_rois_fpcaresults_nofibers.mat','file')==2)
     %do nothing
 else
     %download the data
     outfilename = websave('./data/selected_rois_fpcaresults_nofibers.mat','https://www.dropbox.com/s/nwsv1jib2pr8ilw/selected_rois_fpcaresults_nofibers.mat?dl=1');
-end
 
 load(sprintf('./data/selected_rois_fpcaresults_nofibers.mat'))
 
@@ -137,10 +136,6 @@ option.ALPHA_BETA_PRIOR = 1;
 option.FIRST_LS = 1; %first label-swithing;
 option.SECOND_LS = 1; %second label-swithing;
 option.MCMCdiag = 0;
-
-% seed for reproducibility
-% load('random_seed.mat');
-% rng(d);
 
 [zeta,lP_record,xi] = samplerNDP(inputdata,9,15,9,15,5000,option);
 

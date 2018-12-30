@@ -1,5 +1,30 @@
 function [zeta,lP_record,xi] = samplerNDP(input_data,K,L,intK,intL,num_sweeps,option)
 % main function for sampling posteriors from mixture of product kernels
+% based on Nested Dirichlet Process (NDP). 
+% input: input_data
+%        K and L: parameters for the nested Dirichlet process
+%        intK  initial K (corresponding to K in the Section 4.2 in [1])
+%        intL: initial L (corresponding to L in the Section 4.2 in [1])
+%        num_sweeps: the total number of MCMC samples
+%        option: option here controls most of the parameters inside NDP
+%                option.INDICATOR_COMP2 - whether to include component 2
+%                option.INDICATOR_COMP3 - whether to include component 3
+%                option.COMP1 - string, should be 'fpca' or 'trans' in with the inputdata
+%                               'fpca' indicates that the first component is the functional pca coefficients
+%                               'trans' indicates that the first component is the translation
+%                option.NIW - indicator for using normal-inverse-Wishart distribution as the prior for theta
+%                option.GRAPHICS - indicator for displaying the MCMC chain while sampling
+%                option.ALPHA_BETA_PRIOR - indicator for setting priors for alpha and beta in NDP.
+%                option.FIRST_LS & SECOND_LS - indicator for using the label-switching technique (by Papaspiliopoulos & Roberts, 2008) to improve the MCMC sampling efficiency
+%                option.MCMCdiag - indicator for MCMC diagnosis
+
+% output: zeta: MCMC samples of membership indicator for the each individual
+%         lP_record: log probability record
+%         xi: MCMC samples of membership indicator for each fiber curve in each subject
+
+
+%[1] Z. Zhang, M. Descoteaux, D.B. Dunson. (2019) "Nonparametric Bayes Models of Fiber Curves Connecting Brain Regions", JASA. 
+
 
 INDICATOR_COMP2 = option.INDICATOR_COMP2;
 INDICATOR_COMP3 = option.INDICATOR_COMP3;
@@ -9,7 +34,7 @@ GRAPHICS=    option.GRAPHICS;
 ALPHA_BETA_PRIOR=   option.ALPHA_BETA_PRIOR;
 FIRST_LS = option.FIRST_LS;  % first label-swithing;
 SECOND_LS=    option.SECOND_LS; %second label-swithing;
-
+MCMCdiag = option.MCMCdiag;
     
     
 % number of subjects
@@ -64,7 +89,7 @@ for i=1:3
 end
 end
 
-if(GRAPHICS)
+if(GRAPHICS>0)
     %plot the data and check;
     color = {'ko', 'ro', 'go', 'bo', 'mo', 'co','k*','r*','b*','m*','c*','k.','r.','b.'};
     figure(10);clf;
@@ -189,17 +214,13 @@ for i = 1:K
     pi_ci(1,i) = 1/K;
 end
 
-%for fiber indicators
+%for group indicators
 xi{num_sweeps,NSUB} = {};
 for j=1:NSUB
     nobj = ObjN(j);
-    %K-means on fpca for initialization;
-    tmp_fpca = input_data{j}.fpca_coeff;   
-    tmpidx = kmeans(tmp_fpca',intL);
-    %tmpidx = 1+mod(randperm(nobj),intL);  
+    tmpidx = 1+mod(1:nobj,intL);  
     xi{1,j} = tmpidx;
 end
-
 
 %group weights
 w = zeros(num_sweeps,K,L);
@@ -456,7 +477,7 @@ for sweep = 2:num_sweeps
    %propose random changes every KK iter
    
    if(sweep>2000)
-       KK = 50;
+       KK = 20;
    else
        KK = 2;
    end
@@ -588,11 +609,14 @@ for sweep = 2:num_sweeps
              objidx = xi{sweep,isub}(iobj);
              n(k,objidx) = n(k,objidx) + 1;
          end
-     end;
+     end
  end
- figure(1);
- imagesc(n);
- pause(0.01);
+ 
+ if(GRAPHICS>0)
+     figure(1);
+     imagesc(n);
+     pause(0.01);
+ end
  
  v = zeros(K,L);
  for k=1:K
@@ -747,7 +771,7 @@ for sweep = 2:num_sweeps
                  covariance_record_comp3{k,l}{sweep} = new_covariance_comp3;
                  inv_covariance_record_comp3{k,l}{sweep} = inv(new_covariance_comp3);
              end
-     end;
+     end
  end
  
  toc
@@ -848,8 +872,8 @@ for sweep = 2:num_sweeps
   end
 end
 
+
 % MCMC diagnostic
-MCMCdiag = 0;
 if (MCMCdiag == 1)
     % plot pictures;
     figure, plot(1:length(record),record);
