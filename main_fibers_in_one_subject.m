@@ -10,11 +10,11 @@ addpath('./curve_processing_functions')
 addpath('./mcmc_sampler')
 addpath(genpath('./MCMCDiag'))
 
-if(exist('distributions')==7)
+if(exist('mydistributions','dir')==7)
     %do nothing
 else
     %unzip the file
-     unzip('distributions.zip');
+     unzip('mydistributions.zip');
      addpath(genpath('./distributions'))
 end
 
