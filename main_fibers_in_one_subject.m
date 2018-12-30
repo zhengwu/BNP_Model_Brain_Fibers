@@ -15,7 +15,7 @@ if(exist('mydistributions','dir')==7)
 else
     %unzip the file
      unzip('mydistributions.zip');
-     addpath(genpath('./distributions'))
+     addpath(genpath('./mydistributions'))
 end
 
 % %%%%%%%%%%%%%%%%%%% load data %%%%%%%%%%%%%%%%%%%%
