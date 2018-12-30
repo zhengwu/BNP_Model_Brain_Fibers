@@ -31,7 +31,7 @@ This contains functions to perform MCMC diagnosis
 **utilities**
 This folder contains some functions (e.g., for plotting, writing a logger file and so on) that are useful for the main Matlab files. 
 
-*main_simulation.m* This Matlab code is for the simulation study (variation decomposition with simulated data) presented in "Nonparametric Bayes Models of Fiber Curves Connecting Brain Regions". It will generate subplots in Fig. 3 in the paper.
+*main_simulation.m* This Matlab code is for the simulation study (variation decomposition with simulated data) presented in "Nonparametric Bayes Models of Fiber Curves Connecting Brain Regions". It will generate subplots in Figure 3 in the paper.
 
 *main_fibers_in_one_subject.m* This main file demonstrates the process of modeling fiber curves between two regions of interest in one subject. It can be used to reproduce results presented in Figure 7 in the main paper (with some modification, it can also help to produce Figure 2, 3 and 4 in the Supplement), and Table 1.
 
