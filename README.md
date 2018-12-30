@@ -3,7 +3,7 @@ Matlab code for
 ==============
 This Matlab code is to reproduce some key results presented in the paper "Nonparametric Bayes Models of Fiber Curves Connecting Brain Regions".
 
-The data used in the paper are from two datasets: (a) a test-retest dataset collected at the University of Sherbrooke; (b) the Human Connectome Project Dataset. Since we mainly focus our analysis on brain structural connectivity, only dMRI data in these datasets are used. The whole processed dMRI (after fiber reconstruction) take a lot of disk space. Therefore, we are not able to upload all the original data. After preprocessing using the method described in the paper, i.e., variance decomposition, we dramatically reduced the data size. We release some of the processed data (after variance decomposition) in .mat format, which can be loaded to MATLAB directly.
+The data used in the paper are from two datasets: (a) a test-retest dataset collected at the University of Sherbrooke; (b) the Human Connectome Project Dataset. Since we mainly focus our analysis on brain structural connectivity, only dMRI data in these datasets are used. The whole processed dMRI (after fiber reconstruction) take a lot of disk space. Therefore, we are not able to upload all the original data. After preprocessing using the method described in the paper, i.e., variance decomposition, we dramatically reduced the data size. We release some of the processed data (after variance decomposition) in .mat format, which can be loaded to MATLAB directly. All data are in the "data" folder.
 
 If you use this code, please cite:
 
@@ -17,7 +17,7 @@ Folders and files description
 This folder contains fiber curve preprocessing functions - i.e. to decompose the fibers into the rotation, translation, scaling and reparameterization parts.
 
 **data**
-This folder contains most of the data used in the paper
+This folder contains most of the data used in the paper. Some data are too big to be hosted in GitHub, and we provide links to download them. 
 
 **distributions**
 This folder contains all functions to manipulate different distributions, e.g, randomly sample data from different distributions. 
