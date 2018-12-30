@@ -16,14 +16,13 @@ addpath(genpath('./data'))
 addpath(genpath('./MCMCDiag'))
 addpath('./mcmc_sampler')
 
-if(exist('distributions')==7)
+if(exist('mydistributions','dir')==7)
     %do nothing
 else
     %unzip the file
-     unzip('distributions.zip');
-     addpath(genpath('./distributions'))
+     unzip('mydistributions.zip');
+     addpath(genpath('./mydistributions'))
 end
-
 
 
 %load data
